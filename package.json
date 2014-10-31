@@ -1,0 +1,25 @@
+{
+  "name": "grunt-dock",
+  "description": "A grunt plugin to manage Docker",
+  "version": "0.0.1",
+  "author": "Johann Troendle",
+  "keywords": [
+    "nodejs",
+    "grunt",
+    "docker"
+  ],
+  "repository": { 
+    "type" : "git", 
+    "url" : "https://github.com/JoTrdl/grunt-dock.git"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "dockerode": "latest"
+  },
+  "devDependencies": {
+    "grunt": "latest"
+  },
+  "engines": {
+    "node": ">= 0.10.0"
+  }
+}
