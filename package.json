@@ -14,7 +14,10 @@
   },
   "license": "MIT",
   "dependencies": {
-    "dockerode": "latest"
+    "dockerode": "latest",
+    "easy-table": "latest",
+    "moment": "latest",
+    "tar": "latest"
   },
   "devDependencies": {
     "grunt": "latest"
