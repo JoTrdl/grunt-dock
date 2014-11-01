@@ -82,12 +82,14 @@ module.exports = function(grunt) {
   });
 
 
-  grunt.registerMultiTask('dock', 'Docker management', function(command, arg) {
+  /**
+   * Grunt task depending on config.
+   * 
+   * @param  {String} command the command to execute
+   * @param  {String} arg     The arg to the command
+   */
+  grunt.registerMultiTask('dock', 'Dock to docker', function(command, arg) {
    
-    grunt.log.writeln(JSON.stringify(commands));
-
-    grunt.log.writeln('command:', command, ', arg:', arg);
-
     if (!commands[command]) {
       grunt.fail.warn('Command [' + command + '] not recognized.');
       return;
@@ -103,40 +105,6 @@ module.exports = function(grunt) {
 
     var func = (arg) ? commands[command].handler[arg] : commands[command].handler;
     func.apply(this, [grunt]);
-    
-
-    //grunt.log.writeln(JSON.stringify(options));
-    //grunt.log.writeln(this.target + ': ' + JSON.stringify(this.data));
-
-    
-
-    
-
-   /* docker.buildImage(options.dockerfile, {t: options.tag}, function(err, stream) {
-      grunt.log.writeln('Building image')
-
-      if (err) {
-        grunt.log.errorlns(err);
-        return;
-      }
-
-      stream.setEncoding('utf8');
-
-      stream.on('data', function(data) {
-        var jsonData = JSON.parse(data);
-        grunt.log.writeln(jsonData.stream)
-      });
-
-      stream.on('end', function() {
-        done();
-      });
-    });*/
-    
-    
-    
-
-    
-
   });
 
 };
