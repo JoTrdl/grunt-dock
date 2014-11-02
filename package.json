@@ -17,7 +17,8 @@
     "dockerode": "latest",
     "easy-table": "latest",
     "moment": "latest",
-    "tar": "latest"
+    "tar-stream": "latest",
+    "concat-stream": "latest"
   },
   "devDependencies": {
     "grunt": "latest"
