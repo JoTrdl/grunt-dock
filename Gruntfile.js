@@ -38,7 +38,7 @@ module.exports = function(grunt) {
           port: '2376',*/
 
           tag: 'altar/dev',
-          dockerfile: 'Dockerfile'
+          dockerfile: 'Dockerfile.tar'
         }
       }
     }
