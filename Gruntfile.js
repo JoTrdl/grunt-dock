@@ -38,7 +38,8 @@ module.exports = function(grunt) {
           port: '2376',*/
 
           tag: 'altar/dev',
-          dockerfile: 'Dockerfile.tar'
+          dockerfile: 'Dockerfile'
+          //dockerfile: '/Users/JohannTDL/Documents/grunt-docker-handler/Dockerfile.tar'
         }
       }
     }
@@ -74,7 +75,7 @@ module.exports = function(grunt) {
 
       var func = commands[command].handler[arg];
       if (!func) {
-        grunt.fail.fatal('Command [' + command + ':' + arg + '] not recognized.');
+        grunt.fail.fatal('Command [' + command + ':' + arg + '] not found.');
       }
 
       func.apply(this, [grunt]);
@@ -91,14 +92,14 @@ module.exports = function(grunt) {
   grunt.registerMultiTask('dock', 'Dock to docker', function(command, arg) {
    
     if (!commands[command]) {
-      grunt.fail.warn('Command [' + command + '] not recognized.');
+      grunt.fail.warn('Command [' + command + '] not found.');
       return;
     }
 
     // Check arg
     if (typeof(commands[command].handler) != 'function') {
       if (!commands[command].handler[arg]) {
-        grunt.fail.warn('Argument [' + arg + '] for [' + command + '] not recognized.');
+        grunt.fail.warn('Argument [' + arg + '] for [' + command + '] not found.');
         return;
       }
     }
