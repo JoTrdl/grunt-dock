@@ -38,8 +38,12 @@ module.exports = function(grunt) {
           port: '2376',*/
 
           tag: 'altar/dev',
-          dockerfile: 'Dockerfile'
-          //dockerfile: '/Users/JohannTDL/Documents/grunt-docker-handler/Dockerfile.tar'
+          dockerfile: 'Dockerfile',
+          
+          images: [
+            {tag: 'altar/dev', dockerfile: 'Dockerfile'},
+            {tag: 'altar/dev2', dockerfile: 'Dockerfile'}
+          ]
         }
       }
     }
