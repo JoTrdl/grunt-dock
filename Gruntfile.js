@@ -25,9 +25,9 @@ module.exports = function(grunt) {
         host: '192.168.59.103',
         port: '2376',
 
-        ca: fs.readFileSync('/Users/lwcha_troendlj/.boot2docker/certs/boot2docker-vm/ca.pem'),
-        cert: fs.readFileSync('/Users/lwcha_troendlj/.boot2docker/certs/boot2docker-vm/cert.pem'),
-        key: fs.readFileSync('/Users/lwcha_troendlj/.boot2docker/certs/boot2docker-vm/key.pem')
+        ca: fs.readFileSync('/Users/JohannTDL/.boot2docker/certs/boot2docker-vm/ca.pem'),
+        cert: fs.readFileSync('/Users/JohannTDL/.boot2docker/certs/boot2docker-vm/cert.pem'),
+        key: fs.readFileSync('/Users/JohannTDL/.boot2docker/certs/boot2docker-vm/key.pem')
       },
 
       // Dev
@@ -37,9 +37,6 @@ module.exports = function(grunt) {
           host: '192.168.59.103',
           port: '2376',*/
 
-          tag: 'altar/dev',
-          dockerfile: 'Dockerfile',
-          
           images: [
             {tag: 'altar/dev', dockerfile: 'Dockerfile'},
             {tag: 'altar/dev2', dockerfile: 'Dockerfile'}
@@ -93,7 +90,7 @@ module.exports = function(grunt) {
    * @param  {String} command the command to execute
    * @param  {String} arg     The arg to the command
    */
-  grunt.registerMultiTask('dock', 'Dock to docker', function(command, arg) {
+  grunt.registerMultiTask('dock', 'Dock for docker', function(command, arg) {
    
     if (!commands[command]) {
       grunt.fail.warn('Command [' + command + '] not found.');
