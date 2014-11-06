@@ -5,20 +5,72 @@ grunt-dock
 
 > Dock for Docker.
 
-Grunt plugin to manage Docker your images and your containers.
+Grunt plugin to manage your Docker images & containers.
 
+The main goal of this plugin is to accelerate the development flow with Docker. But it can be usefull to deploy your app in a production environment.
 
 Commands
-----
+--------
 
 Grunt-dock supports these commands:
-* list images or containers
-* build images
-* clean dangling images and exited containers
+
+ * list images or containers
+ * build images
+ * remove images
+ * clean dangling images and exited containers
+ * lifecycle containers (start/stop/restart)
+ * more to come...
+
+Typical workflow
+----------------
+
+Using this Grunt config file: 
+
+```javascript
+dock: {
+  options: {
+  
+    docker: {
+        protocol: 'https',
+        host: '192.168.59.103',
+        port: '2376',
+        
+        ca: fs.readFileSync(CA_PEM_FILE),
+        cert: fs.readFileSync(CERT_PEM_FILE),
+        key: fs.readFileSync(HEY_PEM_FILE)
+    }
+ 
+  }, // options
+  
+  dev: {
+    options: {
+    
+      images: [
+        {tag: 'app/node', dockerfile: 'Dockerfile_node'},
+        {tag: 'app/redis', dockerfile: 'Dockerfile_redis'}
+      ]
+    }
+  } // dev
+} // dock
+```
+
+There are 2 images: one for redis and one other for node js.
+
+1. First we need to build the 2 images:
+
+  ```bash
+  >grunt dock:dev:build
+  ```
+
+2. We can list them using the list command
+  
+  ```bash
+  >grunt dock:dev:list:image
+  ``` 
 
 
 License
-----
+-------
 
 The MIT License (MIT)
 
