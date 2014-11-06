@@ -1,9 +1,20 @@
 grunt-dock
 ==========
 
-Grunt plugin to manage Docker images / containers.
-
 **Curently under development, see dev branch.**
+
+> Dock for Docker.
+
+Grunt plugin to manage Docker your images and your containers.
+
+
+Commands
+----
+
+Grunt-dock supports these commands:
+* list images or containers
+* build images
+* clean dangling images and exited containers
 
 
 License
