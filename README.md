@@ -9,6 +9,8 @@ Grunt plugin to manage your Docker images & containers.
 
 The main goal of this plugin is to accelerate the development flow with Docker. But it can be usefull to deploy your app in a production environment.
 
+Last but not least, Grunt-dock is based on the module [Dockerode](https://github.com/apocas/dockerode).
+
 Commands
 --------
 
@@ -20,6 +22,12 @@ Grunt-dock supports these commands:
  * clean dangling images and exited containers
  * lifecycle containers (start/stop/restart)
  * more to come...
+
+Grunt configuration
+-------------------
+
+TODO
+
 
 Typical workflow
 ----------------
@@ -56,13 +64,13 @@ dock: {
 
 There are 2 images: one for redis and one other for node js.
 
-1. First we need to build the 2 images:
+1. First we need to build these 2 images:
 
   ```bash
   >grunt dock:dev:build
   ```
 
-2. We can list them using the list command
+2. We can list them using the list command:
   
   ```bash
   >grunt dock:dev:list:image
