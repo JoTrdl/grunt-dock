@@ -52,7 +52,7 @@ dock: {
         
         ca: fs.readFileSync(CA_PEM_FILE),
         cert: fs.readFileSync(CERT_PEM_FILE),
-        key: fs.readFileSync(HEY_PEM_FILE)
+        key: fs.readFileSync(KEY_PEM_FILE)
     }
  
   }, // options
