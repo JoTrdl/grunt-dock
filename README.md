@@ -3,13 +3,20 @@ grunt-dock
 
 **Curently under development, see dev branch.**
 
-> Dock for Docker.
+> A Grunt dock for Docker.
 
 Grunt plugin to manage your Docker images & containers.
 
 The main goal of this plugin is to accelerate the development flow with Docker. But it can be usefull to deploy your app in a production environment.
 
 Last but not least, Grunt-dock is based on the module [Dockerode](https://github.com/apocas/dockerode).
+
+Installation
+------------
+
+```bash
+npm install grunt-dock
+```
 
 Commands
 --------
