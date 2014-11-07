@@ -37,18 +37,25 @@ module.exports = function(grunt) {
       // Dev
       dev: {
         options: {
-         /* protocol: 'http',
-          host: '192.168.59.103',
-          port: '2376',*/
 
           images: {
             'altar/dev': {
               dockerfile: 'Dockerfile', 
-              options: { /* extra options to docker build */ }
+              options: { 
+                build:  { /* extra options to docker build  */ },
+                create: { /* extra options to docker create */ },
+                start:  { 
+                  "Binds": ["/Users/JohannTDL/Documents/altar:/bundle"],
+                  "PortBindings": { "8080/tcp": [ { "HostPort": "8080" } ] }
+                },
+                stop:   { /* extra options to docker stop   */ },
+                kill:   { /* extra options to docker kill   */ }
+              }
             },
+
             'altar/dev2': {
               dockerfile: 'Dockerfile', 
-              options: { /* extra options to docker build */ }
+              options: { }
             }
           }
 
@@ -61,7 +68,8 @@ module.exports = function(grunt) {
   var commands = {
     list:  { handler: require('./lib/list'),  description: 'List images/containers' },
     clean: { handler: require('./lib/clean'), description: 'Clean old images/containers' },
-    build: { handler: require('./lib/build'), description: 'Build an image' }
+    build: { handler: require('./lib/build'), description: 'Build an image' },
+    start: { handler: require('./lib/lifecycle').start, description: 'Start a container' }
   };
 
   /**
@@ -115,7 +123,9 @@ module.exports = function(grunt) {
     }
 
     var func = (arg) ? commands[command].handler[arg] : commands[command].handler;
-    func.apply(this, [grunt]);
+    if (!func) func = commands[command].handler;
+
+    func.apply(this, [grunt, arg]);
   });
 
 };

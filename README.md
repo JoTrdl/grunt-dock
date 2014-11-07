@@ -60,10 +60,23 @@ dock: {
   dev: {
     options: {
     
-      images: [
-        {tag: 'app/node', dockerfile: 'Dockerfile_node'},
-        {tag: 'app/redis', dockerfile: 'Dockerfile_redis'}
-      ]
+      	images: {
+	        'app/node': {
+	          dockerfile: 'Dockerfile', 
+	          options: { 
+	            build:  { /* extra options to docker build  */ },
+	            create: { /* extra options to docker create */ },
+	            start:  { /* extra options to docker start  */ },
+	            stop:   { /* extra options to docker stop   */ },
+	            kill:   { /* extra options to docker kill   */ }
+	          }
+	        },
+	        
+	        'app/redis': {
+	          dockerfile: 'Dockerfile', 
+	          options: { }
+	        }
+      	}
     }
   } // dev
 } // dock
