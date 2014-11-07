@@ -41,10 +41,17 @@ module.exports = function(grunt) {
           host: '192.168.59.103',
           port: '2376',*/
 
-          images: [
-            {tag: 'altar/dev', dockerfile: 'Dockerfile'},
-            {tag: 'altar/dev2', dockerfile: 'Dockerfile'}
-          ]
+          images: {
+            'altar/dev': {
+              dockerfile: 'Dockerfile', 
+              options: { /* extra options to docker build */ }
+            },
+            'altar/dev2': {
+              dockerfile: 'Dockerfile', 
+              options: { /* extra options to docker build */ }
+            }
+          }
+
         }
       }
     }
@@ -97,15 +104,13 @@ module.exports = function(grunt) {
   grunt.registerMultiTask('dock', 'Dock for docker', function(command, arg) {
    
     if (!commands[command]) {
-      grunt.fail.warn('Command [' + command + '] not found.');
-      return;
+      grunt.fail.fatal('Command [' + command + '] not found.');
     }
 
     // Check arg
     if (typeof(commands[command].handler) != 'function') {
       if (!commands[command].handler[arg]) {
-        grunt.fail.warn('Argument [' + arg + '] for [' + command + '] not found.');
-        return;
+        grunt.fail.fatal('Argument [' + arg + '] for [' + command + '] not found.');
       }
     }
 
