@@ -23,6 +23,7 @@ module.exports = function(grunt) {
       options: {
 
         docker: {
+          version: 'v1.15',
           protocol: 'https',
           host: '192.168.59.103',
           port: '2376',
@@ -54,8 +55,17 @@ module.exports = function(grunt) {
             },
 
             'altar/dev2': {
-              dockerfile: 'Dockerfile', 
-              options: { }
+              dockerfile: 'Dockerfile2', 
+              options: {
+                build:  { /* extra options to docker build  */ },
+                create: { /* extra options to docker create */ },
+                start:  { 
+                  "Binds": ["/Users/JohannTDL/Documents/altar:/bundle"],
+                  "PortBindings": { "8081/tcp": [ { "HostPort": "8080" } ] }
+                },
+                stop:   { /* extra options to docker stop   */ },
+                kill:   { /* extra options to docker kill   */ }
+              }
             }
           }
 
