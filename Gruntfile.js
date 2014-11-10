@@ -61,7 +61,7 @@ module.exports = function(grunt) {
                 create: { /* extra options to docker create */ },
                 start:  { 
                   "Binds": ["/Users/JohannTDL/Documents/altar:/bundle"],
-                  "PortBindings": { "8081/tcp": [ { "HostPort": "8080" } ] }
+                  "PortBindings": { "8080/tcp": [ { "HostPort": "8081" } ] }
                 },
                 stop:   { /* extra options to docker stop   */ },
                 kill:   { /* extra options to docker kill   */ }
@@ -79,7 +79,12 @@ module.exports = function(grunt) {
     list:  { handler: require('./lib/list'),  description: 'List images/containers' },
     clean: { handler: require('./lib/clean'), description: 'Clean old images/containers' },
     build: { handler: require('./lib/build'), description: 'Build an image' },
-    start: { handler: require('./lib/lifecycle').start, description: 'Start a container' }
+    start: { handler: require('./lib/lifecycle').start, description: 'Start a container' },
+    stop: { handler: require('./lib/lifecycle').stop, description: 'Stop a container' },
+    restart: { handler: require('./lib/lifecycle').restart, description: 'Restart a container' },
+    pause: { handler: require('./lib/lifecycle').pause, description: 'Pause a container' },
+    unpause: { handler: require('./lib/lifecycle').unpause, description: 'Unpause a container' },
+    kill: { handler: require('./lib/lifecycle').kill, description: 'Kill a container' },
   };
 
   /**
