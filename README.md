@@ -1,8 +1,6 @@
 grunt-dock
 ==========
 
-**Curently under development, see dev branch.**
-
 [![Code Climate](https://codeclimate.com/github/JoTrdl/grunt-dock.png)](https://codeclimate.com/github/JoTrdl/grunt-dock)
 
 > A Grunt dock for Docker.
