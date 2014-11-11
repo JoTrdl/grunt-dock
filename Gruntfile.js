@@ -28,9 +28,9 @@ module.exports = function(grunt) {
           host: '192.168.59.103',
           port: '2376',
 
-          ca: fs.readFileSync('/Users/JohannTDL/.boot2docker/certs/boot2docker-vm/ca.pem'),
-          cert: fs.readFileSync('/Users/JohannTDL/.boot2docker/certs/boot2docker-vm/cert.pem'),
-          key: fs.readFileSync('/Users/JohannTDL/.boot2docker/certs/boot2docker-vm/key.pem')
+          ca: fs.readFileSync('/Users/lwcha_troendlj/.boot2docker/certs/boot2docker-vm/ca.pem'),
+          cert: fs.readFileSync('/Users/lwcha_troendlj/.boot2docker/certs/boot2docker-vm/cert.pem'),
+          key: fs.readFileSync('/Users/lwcha_troendlj/.boot2docker/certs/boot2docker-vm/key.pem')
         }
         
       },
@@ -46,7 +46,7 @@ module.exports = function(grunt) {
                 build:  { /* extra options to docker build  */ },
                 create: { /* extra options to docker create */ },
                 start:  { 
-                  "Binds": ["/Users/JohannTDL/Documents/altar:/bundle"],
+                  "Binds": ["/Users/lwcha_troendlj/Documents/altar:/bundle"],
                   "PortBindings": { "8080/tcp": [ { "HostPort": "8080" } ] }
                 },
                 stop:   { /* extra options to docker stop   */ },
@@ -55,12 +55,12 @@ module.exports = function(grunt) {
             },
 
             'altar/dev2': {
-              dockerfile: 'Dockerfile2', 
+              dockerfile: 'Dockerfile2',
               options: {
                 build:  { /* extra options to docker build  */ },
                 create: { /* extra options to docker create */ },
                 start:  { 
-                  "Binds": ["/Users/JohannTDL/Documents/altar:/bundle"],
+                  "Binds": ["/Users/lwcha_troendlj/Documents/altar:/bundle"],
                   "PortBindings": { "8080/tcp": [ { "HostPort": "8081" } ] }
                 },
                 stop:   { /* extra options to docker stop   */ },
@@ -88,44 +88,16 @@ module.exports = function(grunt) {
   };
 
   /**
-   * List / Clean Grunt Task.
-   * 
-   * Usage:
-   *   docker:list:image | docker:list:container
-   *   docker:clean:image | docker:clean:container
-   *   
-   */
-  ['list', 'clean'].forEach(function(command) {
-    grunt.task.registerTask('dock:' + command, commands[command].description, function(arg) {
-    
-      // Fake the default Grunt this.options
-      this.options = function(options) {
-        var config = {};
-        for (var name in grunt.config.data.dock.options) {
-          config[name] = grunt.config.data.dock.options[name];
-          if (!config[name]) config[name] = options[name];
-        }
-        return config;
-      };
-
-      var func = commands[command].handler[arg];
-      if (!func) {
-        grunt.fail.fatal('Command [' + command + ':' + arg + '] not found.');
-      }
-
-      func.apply(this, [grunt]);
-    });
-  });
-
-
-  /**
    * Grunt task depending on config.
    * 
    * @param  {String} command the command to execute
    * @param  {String} arg     The arg to the command
    */
   grunt.registerMultiTask('dock', 'Dock for docker', function(command, arg) {
-   
+    
+    if (!arg)
+      arg = 'default';
+
     if (!commands[command]) {
       grunt.fail.fatal('Command [' + command + '] not found.');
     }
@@ -140,7 +112,11 @@ module.exports = function(grunt) {
     var func = (arg) ? commands[command].handler[arg] : commands[command].handler;
     if (!func) func = commands[command].handler;
 
-    func.apply(this, [grunt, arg]);
+    var options = this.options();
+    var docker = new Docker(options.docker);
+    var done = this.async();
+    
+    func.apply(this, [grunt, docker, options, done, arg]);
   });
 
 };
