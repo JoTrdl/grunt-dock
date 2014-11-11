@@ -46,13 +46,7 @@ dock: {
   options: {
   
     docker: {
-        protocol: 'https',
-        host: '192.168.59.103',
-        port: '2376',
-        
-        ca: fs.readFileSync(CA_PEM_FILE),
-        cert: fs.readFileSync(CERT_PEM_FILE),
-        key: fs.readFileSync(KEY_PEM_FILE)
+      // docker connection
     }
  
   }, // options
@@ -62,19 +56,11 @@ dock: {
     
       	images: {
 	        'app/node': {
-	          dockerfile: 'Dockerfile', 
-	          options: { 
-	            build:  { /* extra options to docker build  */ },
-	            create: { /* extra options to docker create */ },
-	            start:  { /* extra options to docker start  */ },
-	            stop:   { /* extra options to docker stop   */ },
-	            kill:   { /* extra options to docker kill   */ }
-	          }
+	          dockerfile: 'Dockerfile_node'
 	        },
 	        
 	        'app/redis': {
-	          dockerfile: 'Dockerfile', 
-	          options: { }
+	          dockerfile: 'Dockerfile_nginx'
 	        }
       	}
     }
@@ -82,7 +68,7 @@ dock: {
 } // dock
 ```
 
-There are 2 images: one for redis and one other for node js.
+There are 2 images: one for redis and another one for node js.
 
 1. First we need to build these 2 images:
 
@@ -100,6 +86,7 @@ Contributing
 -------
 
 Pull requests are welcome.
+
 Please update the tests and the documentation.
 
 License
