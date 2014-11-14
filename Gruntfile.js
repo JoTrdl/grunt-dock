@@ -116,7 +116,14 @@ module.exports = function(grunt) {
     var docker = new Docker(options.docker);
     var done = this.async();
     
-    func.apply(this, [grunt, docker, options, done, arg]);
+    var callback = function(e) {
+      if (e) {
+        grunt.fail.warn(err);
+      }
+      done();
+    }
+
+    func.apply(this, [grunt, docker, options, callback, arg]);
   });
 
 };
