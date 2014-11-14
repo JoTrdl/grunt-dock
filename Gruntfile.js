@@ -28,9 +28,9 @@ module.exports = function(grunt) {
           host: '192.168.59.103',
           port: '2376',
 
-          ca: fs.readFileSync('/Users/lwcha_troendlj/.boot2docker/certs/boot2docker-vm/ca.pem'),
-          cert: fs.readFileSync('/Users/lwcha_troendlj/.boot2docker/certs/boot2docker-vm/cert.pem'),
-          key: fs.readFileSync('/Users/lwcha_troendlj/.boot2docker/certs/boot2docker-vm/key.pem')
+          ca: fs.readFileSync('/Users/JohannTDL/.boot2docker/certs/boot2docker-vm/ca.pem'),
+          cert: fs.readFileSync('/Users/JohannTDL/.boot2docker/certs/boot2docker-vm/cert.pem'),
+          key: fs.readFileSync('/Users/JohannTDL/.boot2docker/certs/boot2docker-vm/key.pem')
         }
         
       },
@@ -46,7 +46,7 @@ module.exports = function(grunt) {
                 build:  { /* extra options to docker build  */ },
                 create: { /* extra options to docker create */ },
                 start:  { 
-                  "Binds": ["/Users/lwcha_troendlj/Documents/altar:/bundle"],
+                  "Binds": ["/Users/JohannTDL/Documents/altar:/bundle"],
                   "PortBindings": { "8080/tcp": [ { "HostPort": "8080" } ] }
                 },
                 stop:   { /* extra options to docker stop   */ },
@@ -60,7 +60,7 @@ module.exports = function(grunt) {
                 build:  { /* extra options to docker build  */ },
                 create: { /* extra options to docker create */ },
                 start:  { 
-                  "Binds": ["/Users/lwcha_troendlj/Documents/altar:/bundle"],
+                  "Binds": ["/Users/JohannTDL/Documents/altar:/bundle"],
                   "PortBindings": { "8080/tcp": [ { "HostPort": "8081" } ] }
                 },
                 stop:   { /* extra options to docker stop   */ },
