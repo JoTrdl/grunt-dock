@@ -26,27 +26,90 @@ var docker = {
   listContainers: nop
 };
 
-describe("list images", function() {
+describe("list", function() {
 
-  before(function(done) {
-    sinon.stub(docker, 'listImages').yields(null, []);
+  var stubs = {};
+
+  afterEach(function(done) {
+    for (s in stubs) {
+      stubs[s].restore();
+      delete stubs[s];
+    }
     done();
   });
 
-  it("should call docker.listContainers for containers", function (done) {
-    list.image(grunt, docker, null, function(e) {
-      expect(e).to.not.exist;
-      expect(docker.listImages.called).to.be.true;
-      done();
+  describe("images", function() {
+    it("should call done with error", function (done) {
+
+      stubs.listImages = sinon.stub(docker, 'listImages').yields('error', null);
+
+      list.image(grunt, docker, null, function(e) {
+        expect(e).not.to.be.null;
+        done();
+      });
+    });
+
+    it("should call docker.listImages for images", function (done) {
+
+      stubs.listImages = sinon.stub(docker, 'listImages').yields(null, []);
+
+      list.image(grunt, docker, null, function(e) {
+        expect(e).to.not.exist;
+        expect(docker.listImages.called).to.be.true;
+        done();
+      });
     });
   });
-/*
-  it("should call done with error", function (done) {
-    sinon.stub(docker, 'listImages').yields('error', null);
-    list.image(grunt, docker, null, function(e) {
-      expect(e).not.to.be.null;
-      done();
+
+  describe("containers", function() {
+    it("should call done with error", function (done) {
+
+      stubs.listContainers = sinon.stub(docker, 'listContainers').yields('error', null);
+
+      list.container(grunt, docker, null, function(e) {
+        expect(e).not.to.be.null;
+        done();
+      });
+    });
+    
+    it("should call docker.listContainers for containers", function (done) {
+
+      stubs.listContainers = sinon.stub(docker, 'listContainers').yields(null, []);
+
+      list.container(grunt, docker, null, function(e) {
+        expect(e).to.not.exist;
+        expect(docker.listContainers.called).to.be.true;
+        done();
+      });
     });
   });
-*/
+
+  describe("default", function() {
+
+    it("should call done with error", function (done) {
+
+      stubs.listImages = sinon.stub(docker, 'listImages').yields('error', null);
+      stubs.listContainers = sinon.stub(docker, 'listContainers').yields('error', null);
+
+      list.default(grunt, docker, null, function(e) {
+        expect(e).not.to.be.null;
+        done();
+      });
+    });
+    
+    it("should call docker.listImages && docker.listContainers", function (done) {
+
+      stubs.listImages = sinon.stub(docker, 'listImages').yields(null, []);
+      stubs.listContainers = sinon.stub(docker, 'listContainers').yields(null, []);
+
+      list.default(grunt, docker, null, function(e) {
+        expect(e).to.not.exist;
+        expect(docker.listImages.called).to.be.true;
+        expect(docker.listContainers.called).to.be.true;
+        done();
+      });
+    });
+
+  });
 });
+
