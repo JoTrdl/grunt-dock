@@ -86,26 +86,15 @@ describe("list", function() {
 
   describe("default", function() {
 
-    it("should call done with error", function (done) {
+    it("should call list.image() && list.container()", function (done) {
 
-      stubs.listImages = sinon.stub(docker, 'listImages').yields('error', null);
-      stubs.listContainers = sinon.stub(docker, 'listContainers').yields('error', null);
-
-      list.default(grunt, docker, null, function(e) {
-        expect(e).not.to.be.null;
-        done();
-      });
-    });
-    
-    it("should call docker.listImages && docker.listContainers", function (done) {
-
-      stubs.listImages = sinon.stub(docker, 'listImages').yields(null, []);
-      stubs.listContainers = sinon.stub(docker, 'listContainers').yields(null, []);
+      stubs.listImage = sinon.stub(list, 'image').yields(null);
+      stubs.listContainer = sinon.stub(list, 'container').yields(null);
 
       list.default(grunt, docker, null, function(e) {
         expect(e).to.not.exist;
-        expect(docker.listImages.called).to.be.true;
-        expect(docker.listContainers.called).to.be.true;
+        expect(list.image.called).to.be.true;
+        expect(list.container.called).to.be.true;
         done();
       });
     });
