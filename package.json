@@ -17,6 +17,7 @@
     "type" : "git", 
     "url" : "https://github.com/JoTrdl/grunt-dock.git"
   },
+  "main": "./task/dock",
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha -R spec --reporter spec"
   },
