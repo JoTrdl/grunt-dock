@@ -1,9 +1,13 @@
+#
+# Dockerfile for node
+#
+
 FROM    debian:latest
 
-# Install node, redis, nginx
+# Install node
 RUN     export DEBIAN_FRONTEND=noninteractive && \
         apt-get update; apt-get upgrade && \
-        apt-get install -y wget daemontools nginx redis-server && \
+        apt-get install -y wget && \
         wget -q http://nodejs.org/dist/v0.10.33/node-v0.10.33-linux-x64.tar.gz && \
         tar --strip-components 1 -xzf node-v* -C /usr/local && \
         apt-get clean; apt-get autoremove && \
@@ -12,6 +16,11 @@ RUN     export DEBIAN_FRONTEND=noninteractive && \
         node --version && \
         mkdir /bundle; cd /bundle
 
+RUN     echo "require('http').createServer(function (req, res) {" > app.js && \
+        echo "res.writeHead(200, {'Content-Type': 'text/plain'});" >> app.js && \
+        echo "res.end('Hello World from node\n');" >> app.js && \
+        echo "}).listen(8080);" >> app.js
+
 EXPOSE  8080
 
-CMD     ["node", "/bundle/app/app.js"]
+CMD     ["node", "/bundle/app.js"]

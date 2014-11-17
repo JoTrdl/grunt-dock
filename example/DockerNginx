@@ -1,0 +1,25 @@
+#
+# Dockerfile for nginx
+#
+
+FROM    debian:latest
+
+# Install nginx
+RUN     export DEBIAN_FRONTEND=noninteractive && \
+        apt-get update; apt-get upgrade && \
+        apt-get install -y nginx && \
+        apt-get clean; apt-get autoremove
+
+RUN     more /etc/nginx/sites-available/default
+
+RUN     echo "server {" > default && \
+        echo "index index.html;" >> default && \
+        echo "location / { try_files $uri $uri/ /index.html; }" >> default && \
+        echo "}" >> default
+
+RUN     cp default /etc/nginx/sites-available/default && rm default
+RUN     nginx -t
+
+EXPOSE  80 443
+
+CMD     ["nginx", "-g", "daemon off;"]

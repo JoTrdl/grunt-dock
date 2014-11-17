@@ -29,13 +29,12 @@ module.exports = function(grunt) {
         options: {
 
           images: {
-            'altar/dev': {
-              dockerfile: 'Dockerfile',
+            'node': {
+              dockerfile: 'DockerNode',
               options: { 
                 build:  { /* extra options to docker build  */ },
                 create: { /* extra options to docker create */ },
                 start:  { 
-                  "Binds": ["/Users/lwcha_troendlj/Documents/altar:/bundle"],
                   "PortBindings": { "8080/tcp": [ { "HostPort": "8080" } ] }
                 },
                 stop:   { /* extra options to docker stop   */ },
@@ -43,14 +42,13 @@ module.exports = function(grunt) {
               }
             },
 
-            'altar/dev2': {
-              dockerfile: 'Dockerfile2',
+            'nginx': {
+              dockerfile: 'DockerNginx',
               options: {
                 build:  { /* extra options to docker build  */ },
                 create: { /* extra options to docker create */ },
-                start:  { 
-                  "Binds": ["/Users/lwcha_troendlj/Documents/altar:/bundle"],
-                  "PortBindings": { "8080/tcp": [ { "HostPort": "8081" } ] }
+                start:  {
+                  "PortBindings": { "80/tcp": [ { "HostPort": "8081" } ] }
                 },
                 stop:   { /* extra options to docker stop   */ },
                 kill:   { /* extra options to docker kill   */ }
