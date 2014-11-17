@@ -59,13 +59,13 @@ describe("lifecycle", function() {
       it("should call docker.listContainers()", function (done) {
 
         var getContainerData = {};
-        getContainerData[action] = function(opt, cb) { cb('error'); };
+        getContainerData[action] = function(opt, cb) { cb(null); };
 
         stubs.listContainers = sinon.stub(docker, 'listContainers').yields(null, []);
-        stubs.createContainer = sinon.stub(docker, 'createContainer').yields(null);
+        stubs.createContainer = sinon.stub(docker, 'createContainer').yields(null, getContainerData);
 
         stubs.getContainer = sinon.stub(docker, 'getContainer').returns(getContainerData);
-        stubs[action] = sinon.stub(getContainerData, action).yields('error');
+        stubs[action] = sinon.stub(getContainerData, action).yields(null);
 
 
         lifecycle[action](grunt, docker, {images: {}}, function(e) {
