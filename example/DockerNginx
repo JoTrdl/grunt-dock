@@ -12,17 +12,20 @@ FROM    debian:latest
 RUN     export DEBIAN_FRONTEND=noninteractive && \
         apt-get update; apt-get upgrade && \
         apt-get install -y nginx && \
-        apt-get clean; apt-get autoremove && \
-        mkdir /bundle
+        apt-get clean; apt-get autoremove
 
-RUN     echo "\
+RUN     mkdir /var/www; chmod 777 /var/www;
+
+RUN     echo '\
         upstream node { \
           server 127.0.0.1:8080; \
         } \
         server { \
+          error_log /dev/stderr; \
+          access_log /dev/stdout; \
           server_name  localhost; \
           listen 80; \
-          root /bundle; \
+          root /var/www; \
           index index.html; \
           location / { \
           	try_files $uri $uri/ index.html; \
@@ -31,17 +34,17 @@ RUN     echo "\
             proxy_pass http://node; \
           } \
         } \
-        " > /etc/nginx/sites-available/default
+        ' > /etc/nginx/sites-available/default
 
-RUN     echo "<html><body style='text-align:center'>" > /bundle/index.html && \
-        echo "<img href='http://wiki.nginx.org/local/nginx-logo.png'/><h1>Welcome</h1>" >> /bundle/index.html && \
-        echo "</body></html>" >> /bundle/index.html
-
-RUN     ln -sf /dev/stdout /var/log/nginx/access.log && \
-        ln -sf /dev/stderr /var/log/nginx/error.log
+RUN     echo "<html><body style='text-align:center'>" > /var/www/index.html && \
+        echo "<img src='http://wiki.nginx.org/local/nginx-logo.png'/><h1>Welcome</h1>" >> /var/www/index.html && \
+        echo "</body></html>" >> /var/www/index.html
 
 RUN     nginx -t
 
-EXPOSE  80 443
+RUN more /etc/nginx/nginx.conf
+RUN more /etc/nginx/sites-enabled/default
+
+EXPOSE  80
 
 CMD     ["nginx", "-g", "daemon off;"]

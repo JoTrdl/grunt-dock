@@ -38,7 +38,8 @@ module.exports = function(grunt) {
                   "PortBindings": { "8080/tcp": [ { "HostPort": "8080" } ] }
                 },
                 stop:   { /* extra options to docker stop   */ },
-                kill:   { /* extra options to docker kill   */ }
+                kill:   { /* extra options to docker kill   */ },
+                logs:   { stdout: true }
               }
             },
 
@@ -52,7 +53,8 @@ module.exports = function(grunt) {
                  // "Links": ["node:latest"],
                 },
                 stop:   { /* extra options to docker stop   */ },
-                kill:   { /* extra options to docker kill   */ }
+                kill:   { /* extra options to docker kill   */ },
+                logs:   { stdout: true, stderr: true }
               }
             }
           }
