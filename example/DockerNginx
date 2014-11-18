@@ -1,6 +1,10 @@
 #
 # Dockerfile for nginx
 #
+# proxy_set_header Host $host; \
+#  proxy_set_header X-Real-IP $remote_addr; \
+#  proxy_set_header X-Forwarded-Host nginx; \
+
 
 FROM    debian:latest
 
@@ -10,14 +14,25 @@ RUN     export DEBIAN_FRONTEND=noninteractive && \
         apt-get install -y nginx && \
         apt-get clean; apt-get autoremove
 
-RUN     more /etc/nginx/sites-available/default
+RUN     echo "\
+        upstream node { \
+          server 127.0.0.1:8080; \
+        } \
+        server { \
+          server_name  localhost; \
+          index index.html; \
+          location / { \
+          	try_files $uri $uri/ /index.html; \
+          } \
+          location /node { \
+            proxy_pass http://node; \
+          } \
+        } \
+        " > /etc/nginx/sites-available/default
 
-RUN     echo "server {" > default && \
-        echo "index index.html;" >> default && \
-        echo "location / { try_files $uri $uri/ /index.html; }" >> default && \
-        echo "}" >> default
+RUN     ln -sf /dev/stdout /var/log/nginx/access.log && \
+        ln -sf /dev/stderr /var/log/nginx/error.log
 
-RUN     cp default /etc/nginx/sites-available/default && rm default
 RUN     nginx -t
 
 EXPOSE  80 443

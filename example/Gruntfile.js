@@ -17,9 +17,9 @@ module.exports = function(grunt) {
           host: '192.168.59.103',
           port: '2376',
 
-          ca: fs.readFileSync('/Users/lwcha_troendlj/.boot2docker/certs/boot2docker-vm/ca.pem'),
-          cert: fs.readFileSync('/Users/lwcha_troendlj/.boot2docker/certs/boot2docker-vm/cert.pem'),
-          key: fs.readFileSync('/Users/lwcha_troendlj/.boot2docker/certs/boot2docker-vm/key.pem')
+          ca: fs.readFileSync('/Users/JohannTDL/.boot2docker/certs/boot2docker-vm/ca.pem'),
+          cert: fs.readFileSync('/Users/JohannTDL/.boot2docker/certs/boot2docker-vm/cert.pem'),
+          key: fs.readFileSync('/Users/JohannTDL/.boot2docker/certs/boot2docker-vm/key.pem')
         }
         
       },
@@ -48,7 +48,8 @@ module.exports = function(grunt) {
                 build:  { /* extra options to docker build  */ },
                 create: { /* extra options to docker create */ },
                 start:  {
-                  "PortBindings": { "80/tcp": [ { "HostPort": "8081" } ] }
+                  "PortBindings": { "80/tcp": [ { "HostPort": "8081" } ] },
+                  "Links": ["node:latest"],
                 },
                 stop:   { /* extra options to docker stop   */ },
                 kill:   { /* extra options to docker kill   */ }

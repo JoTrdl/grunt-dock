@@ -16,10 +16,15 @@ RUN     export DEBIAN_FRONTEND=noninteractive && \
         node --version && \
         mkdir /bundle; cd /bundle
 
-RUN     echo "require('http').createServer(function (req, res) {" > app.js && \
-        echo "res.writeHead(200, {'Content-Type': 'text/plain'});" >> app.js && \
-        echo "res.end('Hello World from node\n');" >> app.js && \
-        echo "}).listen(8080);" >> app.js
+RUN     echo "\
+        var http = require('http'); \
+        var server = http.createServer(function (req, res) { \
+          res.writeHead(200, {'Content-Type': 'text/plain'}); \
+          res.end('Hello World from node');res.end(); \
+        }); \
+        server.listen(8080); \
+        console.log('Server running at http://127.0.0.1:8000/'); \
+        " > /bundle/app.js
 
 EXPOSE  8080
 

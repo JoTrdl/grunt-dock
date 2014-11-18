@@ -6,21 +6,16 @@
 
 'use strict';
 
-var Docker = require('dockerode');
+var Docker = require('dockerode'),
+    utils = require('../lib/utils');
 
 module.exports = function(grunt) {
 
- var commands = {
-    list:  { handler: require('../lib/list'),  description: 'List images/containers' },
-    clean: { handler: require('../lib/clean'), description: 'Clean old images/containers' },
-    build: { handler: require('../lib/build'), description: 'Build an image' },
-    start: { handler: require('../lib/lifecycle').start, description: 'Start a container' },
-    stop: { handler: require('../lib/lifecycle').stop, description: 'Stop a container' },
-    restart: { handler: require('../lib/lifecycle').restart, description: 'Restart a container' },
-    pause: { handler: require('../lib/lifecycle').pause, description: 'Pause a container' },
-    unpause: { handler: require('../lib/lifecycle').unpause, description: 'Unpause a container' },
-    kill: { handler: require('../lib/lifecycle').kill, description: 'Kill a container' },
-  };
+  var commands = utils.merge({
+    list:  require('../lib/list'),
+    clean: require('../lib/clean'),
+    build: require('../lib/build'),
+  }, require('../lib/lifecycle'));
 
   grunt.registerMultiTask('dock', 'Dock for docker', function(command, arg) {
     if (!arg)
@@ -31,14 +26,14 @@ module.exports = function(grunt) {
     }
 
     // Check arg
-    if (typeof(commands[command].handler) != 'function') {
-      if (!commands[command].handler[arg]) {
+    if (typeof(commands[command]) != 'function') {
+      if (!commands[command][arg]) {
         grunt.fail.fatal('Argument [' + arg + '] for [' + command + '] not found.');
       }
     }
 
-    var func = (arg) ? commands[command].handler[arg] : commands[command].handler;
-    if (!func) func = commands[command].handler;
+    var func = (arg) ? commands[command][arg] : commands[command];
+    if (!func) func = commands[command]; // fallback to the main function
 
     var options = this.options();
     var docker = new Docker(options.docker);
