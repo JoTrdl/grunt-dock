@@ -50,7 +50,7 @@ module.exports = function(grunt) {
                 create: { /* extra options to docker create */ },
                 start:  {
                   "PortBindings": { "80/tcp": [ { "HostPort": "8081" } ] },
-                 // "Links": ["node:latest"],
+                  "Links": ["node:latest"],
                 },
                 stop:   { /* extra options to docker stop   */ },
                 kill:   { /* extra options to docker kill   */ },

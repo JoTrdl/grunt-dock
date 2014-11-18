@@ -18,7 +18,7 @@ RUN     mkdir /var/www; chmod 777 /var/www;
 
 RUN     echo '\
         upstream node { \
-          server 127.0.0.1:8080; \
+          server 172.17.0.156:8080; \
         } \
         server { \
           error_log /dev/stderr; \
@@ -42,9 +42,14 @@ RUN     echo "<html><body style='text-align:center'>" > /var/www/index.html && \
 
 RUN     nginx -t
 
-RUN more /etc/nginx/nginx.conf
-RUN more /etc/nginx/sites-enabled/default
-
 EXPOSE  80
+    
+#RUN     echo '#!/bin/sh' > /var/start_nginx.sh && \
+#        echo 'sed "s/VIRTUAL_HOST/$LATEST_PORT_8080_TCP_ADDR:$LATEST_PORT_8080_TCP_PORT/" /etc/nginx/sites-available/default' >># /var/start_nginx.sh && \
+#        echo 'nginx -g "daemon off;"' >> /var/start_nginx.sh && \
+#        more /etc/nginx/sites-available/default && \
+#        chmod 777 /var/start_nginx.sh
+
+#RUN more  /var/start_nginx.sh
 
 CMD     ["nginx", "-g", "daemon off;"]
