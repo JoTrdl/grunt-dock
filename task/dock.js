@@ -15,7 +15,7 @@ module.exports = function(grunt) {
     list:  require('../lib/list'),
     clean: require('../lib/clean'),
     build: require('../lib/build'),
-  }, require('../lib/lifecycle'));
+  }, require('../lib/container'));
 
   grunt.registerMultiTask('dock', 'Dock for docker', function(command, arg) {
     if (!arg)
