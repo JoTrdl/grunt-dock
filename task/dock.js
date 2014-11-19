@@ -17,7 +17,8 @@ module.exports = function(grunt) {
     build: require('../lib/build'),
   }, require('../lib/container'));
 
-  grunt.registerMultiTask('dock', 'Dock for docker', function(command, arg) {
+  // Process the given command with arg.
+  var processCommand = function(command, arg) {
     if (!arg) {
       arg = 'default';
     }
@@ -37,7 +38,7 @@ module.exports = function(grunt) {
     if (!func) {
       func = commands[command]; // fallback to the main function
     }
-    
+
     var options = this.options();
     var docker = new Docker(options.docker);
     var done = this.async();
@@ -50,6 +51,26 @@ module.exports = function(grunt) {
     };
 
     func.apply(this, [grunt, docker, options, callback, arg]);
+  };
+
+  // For each command, create the grunt task
+  Object.keys(commands).forEach(function(command) {
+    grunt.task.registerTask('dock:' + command, function(arg) {
+
+      // Fake the default Grunt this.options
+      this.options = function(options) {
+        var config = {};
+        for (var name in grunt.config.data.dock.options) {
+          config[name] = grunt.config.data.dock.options[name];
+          if (!config[name]) config[name] = options[name]; 
+        }
+        return config;
+      };
+      
+      processCommand.apply(this, [command, arg]);
+    });
   });
 
+  // Register the multi task
+  grunt.registerMultiTask('dock', 'Dock for docker', processCommand);
 };
