@@ -6,7 +6,6 @@ var fs = require('fs');
 
 module.exports = function(grunt) {
 
-console.log(__dirname);
 
   grunt.initConfig({
     dock: {
@@ -25,18 +24,13 @@ console.log(__dirname);
         },
         
         images: {
-          'node': {
+          'simple': {
             dockerfile: 'Dockerfile',
             options: { 
-              build:  { /* extra options to docker build  */ },
-              create: { /* extra options to docker create */ },
               start:  { 
                 "PortBindings": { "8080/tcp": [ { "HostPort": "8080" } ] },
-                "Binds":["/tmp:/tmp"]
-//                __dirname
+                "Binds":[__dirname + "/bundle:/bundle"]
               },
-              stop:   { /* extra options to docker stop   */ },
-              kill:   { /* extra options to docker kill   */ },
               logs:   { stdout: true }
             }
           }
