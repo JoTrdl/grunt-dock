@@ -18,23 +18,26 @@ module.exports = function(grunt) {
   }, require('../lib/container'));
 
   grunt.registerMultiTask('dock', 'Dock for docker', function(command, arg) {
-    if (!arg)
+    if (!arg) {
       arg = 'default';
+    }
 
     if (!commands[command]) {
       grunt.fail.fatal('Command [' + command + '] not found.');
     }
 
     // Check arg
-    if (typeof(commands[command]) != 'function') {
+    if (typeof(commands[command]) !== 'function') {
       if (!commands[command][arg]) {
         grunt.fail.fatal('Argument [' + arg + '] for [' + command + '] not found.');
       }
     }
 
     var func = (arg) ? commands[command][arg] : commands[command];
-    if (!func) func = commands[command]; // fallback to the main function
-
+    if (!func) {
+      func = commands[command]; // fallback to the main function
+    }
+    
     var options = this.options();
     var docker = new Docker(options.docker);
     var done = this.async();

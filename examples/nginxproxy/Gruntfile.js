@@ -64,6 +64,6 @@ module.exports = function(grunt) {
     }
   });
   
-  require('../task/dock')(grunt);
+  require('../../task/dock')(grunt);
 
 };
