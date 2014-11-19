@@ -9,7 +9,7 @@ var sinon = require('sinon'),
     expect = require('chai').expect,
     fs = require('fs');
 
-var lifecycle = require('../lib/lifecycle.js');
+var lifecycle = require('../lib/container.js');
 
 var nop = function() {};
 
@@ -43,7 +43,7 @@ describe("lifecycle", function() {
     done();
   });
 
-  ['start', 'stop', 'restart', 'pause', 'unpause', 'kill'].forEach(function(action) {
+  ['start', 'stop', 'restart', 'pause', 'unpause', 'kill', 'logs'].forEach(function(action) {
     describe(action, function() {
 
       it("should call " + action + "() with error", function (done) {
