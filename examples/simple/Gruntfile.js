@@ -18,9 +18,9 @@ module.exports = function(grunt) {
           host: '192.168.59.103',
           port: '2376',
 
-          ca: fs.readFileSync('/Users/JohannTDL/.boot2docker/certs/boot2docker-vm/ca.pem'),
-          cert: fs.readFileSync('/Users/JohannTDL/.boot2docker/certs/boot2docker-vm/cert.pem'),
-          key: fs.readFileSync('/Users/JohannTDL/.boot2docker/certs/boot2docker-vm/key.pem')
+          ca: fs.readFileSync('/Users/lwcha_troendlj/.boot2docker/certs/boot2docker-vm/ca.pem'),
+          cert: fs.readFileSync('/Users/lwcha_troendlj/.boot2docker/certs/boot2docker-vm/cert.pem'),
+          key: fs.readFileSync('/Users/lwcha_troendlj/.boot2docker/certs/boot2docker-vm/key.pem')
         },
         
         images: {
@@ -42,3 +42,12 @@ module.exports = function(grunt) {
   require('../../task/dock')(grunt);
 
 };
+
+/*
+ * Commands
+ *
+ * grunt dock:build
+ * grunt dock:start
+ *
+ * + if boot2docker, port forward
+ */
