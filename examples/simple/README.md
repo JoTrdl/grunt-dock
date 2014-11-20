@@ -34,7 +34,7 @@ grunt dock:start
 # Other options: stop/kill/logs/pause/unpause
 ```
 
-You can then test the container by accessing [http://localhost:8080](https://github.com/apocas/dockerode#gettinghttp://localhost:8080) in your browser. It should display a html page. You can edit this page and it should be up to date when refreshing the page, meaning that the container mounted volume has successfully worked.
+You can then test the container by accessing [http://localhost:8080](http://localhost:8080) in your browser. It should display a html page. You can edit this page and it should be up to date when refreshing the page, meaning that the container mounted volume has successfully worked.
 
 Note: for Boot2Docker user, you will need to add a port forwarding in your VM.
 
