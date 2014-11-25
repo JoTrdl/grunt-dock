@@ -1,37 +1,55 @@
 'use strict';
 
 
-var fs = require('fs');
+var fs = require('fs'),
+    path = require('path'),
+    utils = require('../../lib/utils');
 
 
 module.exports = function(grunt) {
 
+  var caPath   = path.resolve(utils.getUserHome(), '.boot2docker/certs/boot2docker-vm/', 'ca.pem'),
+      certPath = path.resolve(utils.getUserHome(), '.boot2docker/certs/boot2docker-vm/', 'cert.pem'),
+      keyPath  = path.resolve(utils.getUserHome(), '.boot2docker/certs/boot2docker-vm/', 'key.pem');
 
   grunt.initConfig({
     dock: {
-      // Apply to All
+    
       options: {
 
+        // Docker connection options
+        // For this example, assume it is a Boot2Docker config.
+        // By default, Boot2Docker only accepts secure connection.
         docker: {
-          version: 'v1.15',
           protocol: 'https',
           host: '192.168.59.103',
           port: '2376',
 
-          ca: fs.readFileSync('/Users/lwcha_troendlj/.boot2docker/certs/boot2docker-vm/ca.pem'),
-          cert: fs.readFileSync('/Users/lwcha_troendlj/.boot2docker/certs/boot2docker-vm/cert.pem'),
-          key: fs.readFileSync('/Users/lwcha_troendlj/.boot2docker/certs/boot2docker-vm/key.pem')
+          ca: fs.readFileSync(caPath),
+          cert: fs.readFileSync(certPath),
+          key: fs.readFileSync(keyPath)
         },
         
         images: {
+          // The 'simple' image
           'simple': {
-            dockerfile: 'Dockerfile',
-            options: { 
-              start:  { 
+            // The Dockerfile to use
+            dockerfile: './Dockerfile',
+
+            // Options for dockerode
+            options: {
+
+              // When starting the container:
+              // Bind the container port to the host (same port)
+              // + 
+              // Bind the './bundle' directory to the '/bundle' container one
+              start:  {
                 "PortBindings": { "8080/tcp": [ { "HostPort": "8080" } ] },
                 "Binds":[__dirname + "/bundle:/bundle"]
               },
-              logs:   { stdout: true }
+
+              // For the logs command, we want to display stdout
+              logs: { stdout: true }
             }
           }
         }
@@ -40,14 +58,4 @@ module.exports = function(grunt) {
   });
   
   require('../../task/dock')(grunt);
-
 };
-
-/*
- * Commands
- *
- * grunt dock:build
- * grunt dock:start
- *
- * + if boot2docker, port forward
- */
