@@ -15,6 +15,8 @@ RUN     export DEBIAN_FRONTEND=noninteractive && \
         node --version && \
         mkdir /bundle; cd /bundle
 
+# Tell Docker to expose the app port
 EXPOSE  8080
 
+# The /bundle dir will be mounted at startup
 CMD     ["node", "/bundle/app.js"]
