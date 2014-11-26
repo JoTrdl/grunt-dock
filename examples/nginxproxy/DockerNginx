@@ -1,10 +1,6 @@
 #
 # Dockerfile for nginx
 #
-# proxy_set_header Host $host; \
-#  proxy_set_header X-Real-IP $remote_addr; \
-#  proxy_set_header X-Forwarded-Host nginx; \
-
 
 FROM    debian:latest
 
@@ -21,13 +17,6 @@ RUN     nginx -t
 RUN ls -la /bundle
 
 EXPOSE  80
-    
-#RUN     echo '#!/bin/sh' > /var/start_nginx.sh && \
-#        echo 'sed "s/VIRTUAL_HOST/$LATEST_PORT_8080_TCP_ADDR:$LATEST_PORT_8080_TCP_PORT/" /etc/nginx/sites-available/default' >># /var/start_nginx.sh && \
-#        echo 'nginx -g "daemon off;"' >> /var/start_nginx.sh && \
-#        more /etc/nginx/sites-available/default && \
-#        chmod 777 /var/start_nginx.sh
 
-#RUN more  /var/start_nginx.sh
-
-CMD     ["nginx", "-g", "daemon off;"]
+#CMD     ["nginx", "-g", "daemon off;"]
+CMD     ["/bin/bash", "/bundle/start.sh"]
