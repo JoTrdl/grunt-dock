@@ -14,33 +14,11 @@ RUN     export DEBIAN_FRONTEND=noninteractive && \
         apt-get install -y nginx && \
         apt-get clean; apt-get autoremove
 
-RUN     mkdir /var/www; chmod 777 /var/www;
-
-RUN     echo '\
-        upstream node { \
-          server 172.17.0.156:8080; \
-        } \
-        server { \
-          error_log /dev/stderr; \
-          access_log /dev/stdout; \
-          server_name  localhost; \
-          listen 80; \
-          root /var/www; \
-          index index.html; \
-          location / { \
-          	try_files $uri $uri/ index.html; \
-          } \
-          location /node { \
-            proxy_pass http://node; \
-          } \
-        } \
-        ' > /etc/nginx/sites-available/default
-
-RUN     echo "<html><body style='text-align:center'>" > /var/www/index.html && \
-        echo "<img src='http://wiki.nginx.org/local/nginx-logo.png'/><h1>Welcome</h1>" >> /var/www/index.html && \
-        echo "</body></html>" >> /var/www/index.html
+RUN     mkdir /bundle; chmod 755 /bundle;
 
 RUN     nginx -t
+
+RUN ls -la /bundle
 
 EXPOSE  80
     
