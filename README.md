@@ -1,7 +1,7 @@
 grunt-dock
 ==========
 
-[![Build Status](http://img.shields.io/travis/JoTrdl/grunt-dock.svg?style=flat-square)](https://travis-ci.org/JoTrdl/grunt-dock) [![Code Climate](http://img.shields.io/codeclimate/JoTrdl/grunt-dock.svg?style=flat-square)](https://codeclimate.com/github/JoTrdl/grunt-dock)
+[![Build Status](http://img.shields.io/travis/JoTrdl/grunt-dock.svg?style=flat-square)](https://travis-ci.org/JoTrdl/grunt-dock) [![Code Climate](http://img.shields.io/codeclimate/github/JoTrdl/grunt-dock.svg?style=flat-square)](https://codeclimate.com/github/JoTrdl/grunt-dock)
 
 > A Grunt dock for Docker.
 
