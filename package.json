@@ -1,0 +1,41 @@
+{
+  "name": "grunt-dock",
+  "description": "A grunt plugin to manage Docker",
+  "version": "1.0.0",
+  "license": "MIT",
+  "author": "Johann Troendle",
+  "maintainers": [
+    "Johann Troendle"
+  ],
+  "keywords": [
+    "nodejs",
+    "grunt",
+    "docker",
+    "dockerode"
+  ],
+  "repository": { 
+    "type" : "git", 
+    "url" : "https://github.com/JoTrdl/grunt-dock.git"
+  },
+  "main": "./task/dock",
+  "scripts": {
+    "test": "./node_modules/mocha/bin/mocha -R spec --reporter spec"
+  },
+  "dependencies": {
+    "async": "latest",
+    "dockerode": "latest",
+    "easy-table": "latest",
+    "moment": "latest",
+    "tar-stream": "latest",
+    "concat-stream": "latest"
+  },
+  "devDependencies": {
+    "grunt": "latest",
+    "mocha": "latest",
+    "chai": "latest",
+    "sinon": "latest"
+  },
+  "engines": {
+    "node": ">= 0.10.0"
+  }
+}

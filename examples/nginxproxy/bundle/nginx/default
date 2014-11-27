@@ -1,0 +1,22 @@
+#
+# Nginx default config file
+#
+
+upstream node {server 172.17.1.52:8080;}
+
+server {
+  error_log /dev/stderr;
+  access_log /dev/stdout;
+  server_name  localhost;
+  listen 80;
+  root /bundle;
+  index index.html;
+  location / {
+    try_files $uri $uri/ index.html;
+  }
+  location /node {
+    proxy_set_header X-Forwarded-Host nginx;
+    proxy_pass http://node;
+  }
+}
+

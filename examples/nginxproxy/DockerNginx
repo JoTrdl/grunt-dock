@@ -1,0 +1,30 @@
+#
+# Dockerfile for nginx
+#
+
+FROM    debian:latest
+
+# Install nginx
+RUN     export DEBIAN_FRONTEND=noninteractive && \
+        apt-get update; apt-get upgrade && \
+        apt-get install -y nginx && \
+        apt-get clean; apt-get autoremove
+
+RUN     mkdir /bundle; chmod 755 /bundle;
+
+RUN     nginx -t
+
+RUN ls -la /bundle
+
+EXPOSE  80
+
+# Because this container is linked to the node one,
+# it will not start the NGINX with this command:
+#
+# CMD     ["nginx", "-g", "daemon off;"]
+#
+# We have to use a startup script that configure NGINX 
+# with the node IP / port and then starts it.
+# (Only because NGINX does not support system ENV variable in its config)
+
+CMD     ["/bin/bash", "/bundle/start.sh"]
