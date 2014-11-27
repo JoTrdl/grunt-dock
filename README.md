@@ -11,6 +11,23 @@ The main goal of this plugin is to accelerate the development flow with Docker. 
 
 Last but not least, Grunt-dock is based on the module [Dockerode](https://github.com/apocas/dockerode). Input options can be passed to this module and return values are unchanged.
 
+Why a Grunt plugin?
+-------------------
+
+The idea came when I was developping a Docker container. I used to enter a lot of commands like build/start/kill then cleaning all the stuff and restarting the workflow.
+
+Before Grunt-Dock, to clean Docker images/containers:
+
+```bash
+docker ps -a -q --filter "status=exited" | xargs docker rm
+docker rmi `docker images -q --filter "dangling=true"`
+```
+After:
+
+```bash
+grunt dock:clean
+```
+
 Installation
 ------------
 
@@ -23,23 +40,18 @@ Commands
 
 Grunt-dock supports these commands:
 
- * list images or containers
- * build images
- * remove images
- * clean dangling images and exited containers
- * lifecycle containers (start/stop/restart)
- * more to come...
+ * **list** images or containers
+ * **build** images
+ * **clean** dangling images and exited containers
+ * **start**/**stop**/**restart**/**kill**/**pause**/**unpause** containers
+ * **logs** containers
 
 Grunt configuration
 -------------------
 
-TODO
+Grunt-Dock supports main and targets level configuration.
 
-
-Typical workflow
-----------------
-
-Using this Grunt config file: 
+Here is basic Grunt configuration:
 
 ```javascript
 dock: {
@@ -47,43 +59,110 @@ dock: {
   
     docker: {
       // docker connection
+      // See Dockerode for options
     }
- 
+  
+    // It is possible to define images in the 'default' grunt option
+    // The command will look like 'grunt dock:build'
+    images: {
+      'dockerapp': { // Name to use for Docker
+        dockerfile: 'Dockerfile',
+        options: { 
+          build:   { /* extra options to docker build   */ },
+          create:  { /* extra options to docker create  */ },
+          start:   { /* extra options to docker start   */ },
+          stop:    { /* extra options to docker stop    */ },
+          kill:    { /* extra options to docker kill    */ },
+          logs:    { /* extra options to docker logs    */ },
+          pause:   { /* extra options to docker pause   */ },
+          unpause: { /* extra options to docker unpause */ }
+        }
+      }
+    }
   }, // options
   
   dev: {
     options: {
     
-      	images: {
-	        'app/node': {
-	          dockerfile: 'Dockerfile_node'
-	        },
-	        
-	        'app/redis': {
-	          dockerfile: 'Dockerfile_nginx'
-	        }
-      	}
+      // You can also define images by target
+      // This case, to invoke a command: 'grunt dock:dev:build'
+      images: {
+      'appname': { // Name to use for Docker
+           dockerfile: 'Dockerfile',
+           options: { 
+             build:   { /* extra options to docker build   */ },
+             create:  { /* extra options to docker create  */ },
+             start:   { /* extra options to docker start   */ },
+             stop:    { /* extra options to docker stop    */ },
+             kill:    { /* extra options to docker kill    */ },
+             logs:    { /* extra options to docker logs    */ },
+             pause:   { /* extra options to docker pause   */ },
+             unpause: { /* extra options to docker unpause */ }
+           }
+        }
+      }
     }
-  } // dev
+  } // dev env
 } // dock
 ```
 
-There are 2 images: one for redis and another one for node js.
+The property 'dockerfile' can be any supported Docker formats plus plain format (this case, Grunt-Dock will create a tar.gz stream to pass to Docker - very usefull for development -). 
 
-1. First we need to build these 2 images:
+You can define some specifics options to pass for each commands of each images (start, stop, build, etc.).
+See Docker API/Dockerode documentations.
 
-  ```bash
-  grunt dock:dev:build
-  ```
+To use it, simply enter these commands:
 
-2. We can list them using the list command:
-  
-  ```bash
-  grunt dock:dev:list:image
-  ``` 
+```bash
+# Build
+grunt dock:build
+grunt dock:dev:build
+
+# Start, stop, restart, kill, pause, unpause, logs (replace sample action by right one)
+grunt dock:start
+grunt dock:dev:start
+
+# List
+grunt dock:list
+grunt dock:dev:list
+
+# Clean
+grunt dock:clean
+grunt dock:dev:clean
+```
+
+It is possible to only apply a command for a specific image. For instance, to only start the container 'appname', enter:
+```bash
+# Start only appname container
+grunt dock:start:appname
+# for 'dev' target:
+grunt dock:dev:start:appname
+```
+
+**list** and **clean** commands allow a third param: *image* or *container* to only list/clean this type:   
+
+```bash
+# List only images
+grunt dock:list:image
+grunt dock:dev:list:image
+
+# List only containers
+grunt dock:list:container
+grunt dock:dev:list:container
+```
+Samples
+-------
+
+See the [examples](https://github.com/JoTrdl/grunt-dock/tree/master/examples) directory.
+
+Coming next
+-----------
+
+* Add some better tests
+* Add or create some Docker useful features!
 
 Contributing
--------
+------------
 
 Pull requests are welcome.
 
