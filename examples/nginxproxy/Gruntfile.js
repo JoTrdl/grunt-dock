@@ -1,3 +1,9 @@
+/* 
+ * MIT License (MIT) - Copyright (c) 2014 Johann Troendle
+ * 
+ * This file is part of <grunt-dock>.
+ */
+
 'use strict';
 
 
@@ -14,9 +20,12 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
     dock: {
-      // Apply to All
+  
       options: {
 
+        // Docker connection options
+        // For this example, assume it is a Boot2Docker config.
+        // By default, Boot2Docker only accepts secure connection.
         docker: {
           version: 'v1.15',
           protocol: 'https',
@@ -30,31 +39,42 @@ module.exports = function(grunt) {
         
       },
 
-      // Dev
+      // For this sample, we will use a dev target
       dev: {
         options: {
 
+          // Docker images definition
           images: {
+
+            // The Node.js container
             'node': {
+              // The Dockerfile to use
               dockerfile: 'DockerNode',
+
               options: {
-                build:  { /* extra options to docker build  */ },
-                create: { /* extra options to docker create */ },
+                
+                // A startup, bind the 8080 port to the host
+                // Bind the directory 'bundle/node' into the directory container '/bundle'
                 start:  { 
                   "PortBindings": { "8080/tcp": [ { "HostPort": "8080" } ] },
                   "Binds":[__dirname + "/bundle/node:/bundle"]
                 },
-                stop:   { /* extra options to docker stop   */ },
-                kill:   { /* extra options to docker kill   */ },
+
+                // For logs, only stdout
                 logs:   { stdout: true }
               }
             },
 
+            // The NGINX container
             'nginx': {
+              // The Dockerfile to use
               dockerfile: 'DockerNginx',
+
               options: {
-                build:  { /* extra options to docker build  */ },
-                create: { /* extra options to docker create */ },
+
+                // Bind the 80 port to the host 8081
+                // Links this container to the node one. So Docker env variable will be accessible
+                // Bind 2 directories to the container (config, NGINX startup script, default index.html file)
                 start:  {
                   "PortBindings": { "80/tcp": [ { "HostPort": "8081" } ] },
                   "Links": ["node:latest"],
@@ -63,8 +83,7 @@ module.exports = function(grunt) {
                     __dirname + "/bundle/nginx:/etc/nginx/sites-available",
                   ]
                 },
-                stop:   { /* extra options to docker stop   */ },
-                kill:   { /* extra options to docker kill   */ },
+                // For logs, sdtout & stderr
                 logs:   { stdout: true, stderr: true }
               }
             }

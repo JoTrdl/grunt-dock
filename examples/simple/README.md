@@ -9,7 +9,7 @@ A simple sample that starts a Node.js container with a mounted volume.
 Update the options to connect with Docker.
 For supported options, see [dockerode](https://github.com/apocas/dockerode#getting-started).
 
-For example, in a Mac environment with Boot2Docker, it should like :
+For example, in a Mac environment with Boot2Docker, it should like:
 ```javascript
 docker: {
   protocol: 'https',

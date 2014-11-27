@@ -7,7 +7,7 @@ var server = http.createServer(function (req, res) {
   
   
   res.write('<ul>');
-  for (i in req.headers) {
+  for (var i in req.headers) {
     res.write('<li>');
     res.write(i + '&nbsp;:&nbsp;' + req.headers[i]);
     res.write('</li>');
