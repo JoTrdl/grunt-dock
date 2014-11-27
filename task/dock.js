@@ -62,7 +62,9 @@ module.exports = function(grunt) {
         var config = {};
         for (var name in grunt.config.data.dock.options) {
           config[name] = grunt.config.data.dock.options[name];
-          if (!config[name]) config[name] = options[name]; 
+          if (!config[name]) {
+            config[name] = options[name];
+          }
         }
         return config;
       };
