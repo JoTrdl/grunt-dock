@@ -29,3 +29,7 @@ node_modules
 
 # Mac file
 .DS_Store
+
+# IntelliJ
+*.iml
+.idea/
