@@ -27,6 +27,7 @@
     "easy-table": "latest",
     "moment": "latest",
     "tar-stream": "latest",
+    "tar-fs": "latest",
     "concat-stream": "latest"
   },
   "devDependencies": {
