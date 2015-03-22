@@ -51,7 +51,7 @@ Grunt configuration
 
 Grunt-Dock supports main and targets level configuration.
 
-Here is basic Grunt configuration:
+Here is a basic Grunt configuration:
 
 ```javascript
 dock: {
@@ -106,7 +106,11 @@ dock: {
 } // dock
 ```
 
-The property 'dockerfile' can be any supported Docker formats plus plain format (this case, Grunt-Dock will create a tar.gz stream to pass to Docker - very usefull for development -). 
+The property 'dockerfile' supports:
+
+ * **tar archive** any tarballs supported by Docker (.tar, .tar.gz, .tar.bz2, .tar.xz). It will be passed directly to the Docker server.
+ * **directory** Grunt-Dock will create a tarball (gz compressed) of this directory before sending it to Docker.
+ * **plain file** Grunt-Dock will create a tarball containing 1 "Dockerfile" file.
 
 You can define some specifics options to pass for each commands of each images (start, stop, build, etc.).
 See Docker API/Dockerode documentations.

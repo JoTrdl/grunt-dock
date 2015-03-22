@@ -64,7 +64,7 @@ describe("build", function() {
 
     stubs.buildImage = sinon.stub(docker, 'buildImage').yields('error', null);
 
-    build(grunt, docker, {images: {}}, function(e) {
+    build(grunt, docker, {images: {'test' : {dockerfile: null}}}, function(e) {
       expect(e).not.to.be.null;
       done();
     });
