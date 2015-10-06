@@ -33,3 +33,8 @@ node_modules
 # IntelliJ
 *.iml
 .idea/
+
+# Eclipse
+.project
+.settings
+
