@@ -6,16 +6,16 @@
 
 'use strict';
 
-var Docker = require('dockerode'),
-    utils = require('../lib/utils');
+var Docker = require('dockerode'), utils = require('../lib/utils');
 
 module.exports = function(grunt) {
 
   var commands = utils.merge({
-    list:  require('../lib/list'),
-    clean: require('../lib/clean'),
-    build: require('../lib/build'),
-    push: require('../lib/push')
+    list : require('../lib/list'),
+    clean : require('../lib/clean'),
+    build : require('../lib/build'),
+    push : require('../lib/push'),
+    pull : require('../lib/pull')
   }, require('../lib/container'));
 
   // Process the given command with arg.
@@ -29,9 +29,10 @@ module.exports = function(grunt) {
     }
 
     // Check arg
-    if (typeof(commands[command]) !== 'function') {
+    if (typeof (commands[command]) !== 'function') {
       if (!commands[command][arg]) {
-        grunt.fail.fatal('Argument [' + arg + '] for [' + command + '] not found.');
+        grunt.fail.fatal('Argument [' + arg + '] for [' + command
+            + '] not found.');
       }
     }
 
@@ -41,9 +42,9 @@ module.exports = function(grunt) {
     }
 
     var options = this.options();
-    var docker = new Docker(options.docker);
+    var docker = (options.docker) ? new Docker(options.docker) : null;
     var done = this.async();
-    
+
     var callback = function(e) {
       if (e) {
         grunt.fail.warn(e);
@@ -51,7 +52,7 @@ module.exports = function(grunt) {
       done();
     };
 
-    func.apply(this, [grunt, docker, options, callback, arg]);
+    func.apply(this, [ grunt, docker, options, callback, arg ]);
   };
 
   // For each command, create the grunt task
@@ -61,7 +62,7 @@ module.exports = function(grunt) {
       // Fake the default Grunt this.options
       this.options = function(options) {
         var config = {};
-        for (var name in grunt.config.data.dock.options) {
+        for ( var name in grunt.config.data.dock.options) {
           config[name] = grunt.config.data.dock.options[name];
           if (!config[name]) {
             config[name] = options[name];
@@ -69,8 +70,8 @@ module.exports = function(grunt) {
         }
         return config;
       };
-      
-      processCommand.apply(this, [command, arg]);
+
+      processCommand.apply(this, [ command, arg ]);
     });
   });
 
