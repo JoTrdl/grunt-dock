@@ -38,3 +38,4 @@ node_modules
 .project
 .settings
 
+/test.sh
