@@ -217,4 +217,131 @@ describe("utils", function() {
 
   });
 
+  describe("composeRunOptions", function() {
+
+    it("should keep generic options when run-specific ones are not defined",
+        function(done) {
+          var options = {
+            registry : "registry:5000",
+            auth : {
+              username : "username1",
+              password : "password1"
+            },
+            docker : {
+              protocol : "http",
+              host : "localhost",
+              port : 2375
+            },
+            images : {
+              testimage : {
+                dockerfile : "./target/geoserver",
+                tag : "0.2.0",
+                options : {
+                  run : {
+                    cmd : [],
+                    create : "port=1000",
+                    start : [ "--detach", "--name=consul",
+                        "--publish=8500:8500", "--hostname=lb",
+                        "lb:5000/consul:0.3.1" ]
+                  }
+                }
+              }
+            }
+          };
+          var expOptions = {
+            registry : "registry:5000",
+            auth : {
+              username : "username1",
+              password : "password1"
+            },
+            tag : "0.2.0",
+            docker : [ {
+              protocol : "http",
+              host : "localhost",
+              port : 2375
+            } ],
+            name : "registry:5000/testimage",
+            repo : "registry:5000/testimage:0.2.0",
+            cmd : [],
+            create : ["port=1000"],
+            start : [ "--detach", "--name=consul", "--publish=8500:8500",
+                "--hostname=lb", "lb:5000/consul:0.3.1" ]
+          };
+          var runOptions = utils.composeRunOptions(options, "testimage");
+          expect(runOptions).to.eql(expOptions);
+          done();
+        });
+
+    it("should overwrite generic options with the run-specific ones", function(
+        done) {
+      var options = {
+        registry : "registry:5000",
+        auth : {
+          username : "username1",
+          password : "password1"
+        },
+        docker : {
+          protocol : "http",
+          host : "localhost",
+          port : 2375
+        },
+        images : {
+          testimage : {
+            dockerfile : "./target/geoserver",
+            tag : "0.2.0",
+            options : {
+              run : {
+                registry : "registry2:5000",
+                auth : {
+                  username : "username2",
+                  password : "password2"
+                },
+                docker : [ {
+                  protocol : "http",
+                  host : "localhost",
+                  port : 2375
+                }, {
+                  protocol : "https",
+                  host : "localhost2",
+                  port : 2376
+                } ],
+                cmd : [],
+                create : [ "port=1000" ],
+                start : [ "--detach", "--name=consul", "--publish=8500:8500",
+                    "--hostname=lb", "lb:5000/consul:0.3.1" ]
+              }
+            }
+          }
+        }
+      };
+      var expOptions = {
+        registry : "registry2:5000",
+        auth : {
+          username : "username2",
+          password : "password2"
+        },
+        tag : "0.2.0",
+        docker : [ {
+          protocol : "http",
+          host : "localhost",
+          port : 2375
+        }, {
+          protocol : "https",
+          host : "localhost2",
+          port : 2376
+        } ],
+        name : "registry2:5000/testimage",
+        repo : "registry2:5000/testimage:0.2.0",
+        cmd : [],
+        create : [ "port=1000" ],
+        start : [ "--detach", "--name=consul", "--publish=8500:8500",
+            "--hostname=lb", "lb:5000/consul:0.3.1" ]
+      };
+      var runOptions = utils.composeRunOptions(options, "testimage");
+      expect(runOptions).to.eql(expOptions);
+      done();
+    });
+
+  });
+
 });

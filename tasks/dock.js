@@ -15,7 +15,8 @@ module.exports = function(grunt) {
     clean : require('../lib/clean'),
     build : require('../lib/build'),
     push : require('../lib/push'),
-    pull : require('../lib/pull')
+    pull : require('../lib/pull'),
+    run : require('../lib/run')
   }, require('../lib/container'));
 
   // Process the given command with arg.
