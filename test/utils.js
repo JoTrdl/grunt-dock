@@ -238,11 +238,24 @@ describe("utils", function() {
                 tag : "0.2.0",
                 options : {
                   run : {
-                    cmd : [],
-                    create : "port=1000",
-                    start : [ "--detach", "--name=consul",
-                        "--publish=8500:8500", "--hostname=lb",
-                        "lb:5000/consul:0.3.1" ]
+                    cmd : [ "ls", "pwd" ],
+                    create : {
+                      ExposedPorts : {
+                        "80/tcp" : {}
+                      },
+                      HostConfig : {
+                        PortBindings : {
+                          "8080/tcp" : [ {
+                            HostPort : "80"
+                          } ]
+                        }
+                      }
+                    },
+                    start : {
+                      ExposedPorts : {
+                        "81/tcp" : {}
+                      }
+                    }
                   }
                 }
               }
@@ -262,10 +275,24 @@ describe("utils", function() {
             } ],
             name : "registry:5000/testimage",
             repo : "registry:5000/testimage:0.2.0",
-            cmd : [],
-            create : ["port=1000"],
-            start : [ "--detach", "--name=consul", "--publish=8500:8500",
-                "--hostname=lb", "lb:5000/consul:0.3.1" ]
+            cmd : [ "ls", "pwd" ],
+            create : {
+              ExposedPorts : {
+                "80/tcp" : {}
+              },
+              HostConfig : {
+                PortBindings : {
+                  "8080/tcp" : [ {
+                    HostPort : "80"
+                  } ]
+                }
+              }
+            },
+            start : {
+              ExposedPorts : {
+                "81/tcp" : {}
+              }
+            }
           };
           var runOptions = utils.composeRunOptions(options, "testimage");
           expect(runOptions).to.eql(expOptions);
@@ -305,10 +332,24 @@ describe("utils", function() {
                   host : "localhost2",
                   port : 2376
                 } ],
-                cmd : [],
-                create : [ "port=1000" ],
-                start : [ "--detach", "--name=consul", "--publish=8500:8500",
-                    "--hostname=lb", "lb:5000/consul:0.3.1" ]
+                cmd : [ "ls", "pwd" ],
+                create : {
+                  ExposedPorts : {
+                    "80/tcp" : {}
+                  },
+                  HostConfig : {
+                    PortBindings : {
+                      "8080/tcp" : [ {
+                        HostPort : "80"
+                      } ]
+                    }
+                  }
+                },
+                start : {
+                  ExposedPorts : {
+                    "81/tcp" : {}
+                  }
+                }
               }
             }
           }
@@ -332,10 +373,24 @@ describe("utils", function() {
         } ],
         name : "registry2:5000/testimage",
         repo : "registry2:5000/testimage:0.2.0",
-        cmd : [],
-        create : [ "port=1000" ],
-        start : [ "--detach", "--name=consul", "--publish=8500:8500",
-            "--hostname=lb", "lb:5000/consul:0.3.1" ]
+        cmd : [ "ls", "pwd" ],
+        create : {
+          ExposedPorts : {
+            "80/tcp" : {}
+          },
+          HostConfig : {
+            PortBindings : {
+              "8080/tcp" : [ {
+                HostPort : "80"
+              } ]
+            }
+          }
+        },
+        start : {
+          ExposedPorts : {
+            "81/tcp" : {}
+          }
+        }
       };
       var runOptions = utils.composeRunOptions(options, "testimage");
       expect(runOptions).to.eql(expOptions);
