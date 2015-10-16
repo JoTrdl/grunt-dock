@@ -17,7 +17,7 @@ describe(
 
       describe("toArray", function() {
 
-        it("should transform a promitive type in an Array", function(done) {
+        it("should transform a primitive type in an Array", function(done) {
           var result = utils.toArray(1);
           expect(result).to.eql([ 1 ]);
           done();
@@ -26,6 +26,43 @@ describe(
         it("should keep an Array an Array", function(done) {
           var result = utils.toArray([ 1 ]);
           expect(result).to.eql([ 1 ]);
+          done();
+        });
+
+      });
+
+      describe("getContainerStatus", function() {
+
+        it("should return RUNNING when the container is up", function(done) {
+          var result = utils.getContainerStatus({
+            Status : "Up 1 seconds"
+          });
+          expect(result).to.eql("RUNNING");
+          done();
+        });
+
+        it("should return STOPPED when the container is stoped",
+            function(done) {
+              var result = utils.getContainerStatus({
+                Status : "Exited (137) 11 minutes ago"
+              });
+              expect(result).to.eql("STOPPED");
+              done();
+            });
+
+        it("should return OTHER when the container is in another state",
+            function(done) {
+              var result = utils.getContainerStatus({
+                Status : "xxx"
+              });
+              expect(result).to.eql("OTHER");
+              done();
+            });
+
+        it("should return OTHER when the container has no status", function(
+            done) {
+          var result = utils.getContainerStatus({});
+          expect(result).to.eql("OTHER");
           done();
         });
 
@@ -46,7 +83,8 @@ describe(
             it(
                 "should keep unchanged an image name when registry and version are undefined",
                 function(done) {
-                  var result = utils.qualifiedImageName("image", undefined, undefined);
+                  var result = utils.qualifiedImageName("image", undefined,
+                      undefined);
                   expect(result).to.equal("image");
                   done();
                 });
