@@ -50,7 +50,7 @@ describe("lifecycle", function() {
 
         stubs.listContainers = sinon.stub(docker, 'listContainers').yields('error', null);
 
-        lifecycle[action](grunt, docker, {images: {}}, function(e) {
+        lifecycle[action](grunt, docker, {images: {test:{}}}, function(e) {
           expect(e).not.to.be.null;
           done();
         });
@@ -68,7 +68,7 @@ describe("lifecycle", function() {
         stubs[action] = sinon.stub(getContainerData, action).yields(null);
 
 
-        lifecycle[action](grunt, docker, {images: {}}, function(e) {
+        lifecycle[action](grunt, docker, {images: {test:{}}}, function(e) {
           expect(e).to.not.exist;
           expect(docker.listContainers.called).to.be.true;
           done();
