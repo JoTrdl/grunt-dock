@@ -11,6 +11,8 @@ var fs = require('fs'),
     path = require('path'),
     utils = require('../../lib/utils');
 
+// Prevent a UNABLE_TO_VERIFY_LEAF_SIGNATURE error with node version v4.2.1 
+process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
 
 module.exports = function(grunt) {
 
