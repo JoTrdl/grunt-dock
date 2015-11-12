@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "async": "latest",
-    "dockerode": "latest",
+    "dockerode": "git+https://github.com/lmoran/dockerode.git#master",
     "easy-table": "latest",
     "moment": "latest",
     "tar-stream": "latest",
