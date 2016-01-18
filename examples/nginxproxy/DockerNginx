@@ -6,7 +6,7 @@ FROM    debian:latest
 
 # Install nginx
 RUN     export DEBIAN_FRONTEND=noninteractive && \
-        apt-get update; apt-get upgrade && \
+        apt-get update && apt-get upgrade -y && apt-get autoremove && apt-get autoclean && \
         apt-get install -y nginx && \
         apt-get clean; apt-get autoremove
 
@@ -23,7 +23,7 @@ EXPOSE  80
 #
 # CMD     ["nginx", "-g", "daemon off;"]
 #
-# We have to use a startup script that configure NGINX 
+# We have to use a startup script that configure NGINX
 # with the node IP / port and then starts it.
 # (Only because NGINX does not support system ENV variable in its config)
 

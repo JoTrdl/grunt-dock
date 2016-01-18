@@ -13,8 +13,8 @@
     "docker",
     "dockerode"
   ],
-  "repository": { 
-    "type" : "git", 
+  "repository": {
+    "type" : "git",
     "url" : "https://github.com/JoTrdl/grunt-dock.git"
   },
   "main": "./task/dock",
@@ -23,12 +23,13 @@
   },
   "dependencies": {
     "async": "latest",
-    "dockerode": "git+https://github.com/apocas/dockerode.git#master",
+    "dockerode": "latest",
     "easy-table": "latest",
     "moment": "latest",
     "tar-stream": "latest",
     "tar-fs": "latest",
-    "concat-stream": "latest"
+    "concat-stream": "latest",
+    "minimatch": "latest"
   },
   "devDependencies": {
     "grunt": "latest",
