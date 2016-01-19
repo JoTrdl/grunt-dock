@@ -1,7 +1,7 @@
-/* 
+/*
  * MIT License (MIT)
  * Copyright (c) 2014 Johann Troendle
- * 
+ *
  * This file is part of <grunt-dock>.
  */
 
@@ -11,9 +11,7 @@ var sinon = require('sinon'), expect = require('chai').expect;
 
 var utils = require('../lib/utils.js');
 
-describe(
-    "utils",
-    function() {
+describe("utils", function() {
 
       describe("toArray", function() {
 
@@ -516,4 +514,114 @@ describe(
 
           });
 
+  describe("shouldIgnore", function() {
+
+    it("should pass the Go match expressions", function(done) {
+      // from https://golang.org/src/path/filepath/match_test.go
+      var testcases = [
+        ["abc", "abc", true],
+        ["*", "abc", true],
+        ["*c", "abc", true],
+        ["a*", "a", true],
+        ["a*", "abc", true],
+        ["a*", "ab/c", false],
+        ["a*/b", "abc/b", true],
+        ["a*/b", "a/c/b", false],
+        ["a*b*c*d*e*/f", "axbxcxdxe/f", true],
+        ["a*b*c*d*e*/f", "axbxcxdxexxx/f", true],
+        ["a*b*c*d*e*/f", "axbxcxdxe/xxx/f", false],
+        ["a*b*c*d*e*/f", "axbxcxdxexxx/fff", false],
+        ["a*b?c*x", "abxbbxdbxebxczzx", true],
+        ["a*b?c*x", "abxbbxdbxebxczzy", false],
+        ["ab[c]", "abc", true],
+        ["ab[b-d]", "abc", true],
+        ["ab[e-g]", "abc", false],
+        ["ab[^c]", "abc", false],
+        ["ab[^b-d]", "abc", false],
+        ["ab[^e-g]", "abc", true],
+        ["a\\*b", "a*b", true],
+        ["a\\*b", "ab", false],
+        ["a?b", "a☺b", true],
+        ["a[^a]b", "a☺b", true],
+        ["a???b", "a☺b", false],
+        ["a[^a][^a][^a]b", "a☺b", false],
+        ["[a-ζ]*", "α", true],
+        ["*[a-ζ]", "A", false],
+        ["a?b", "a/b", false],
+        ["a*b", "a/b", false],
+        ["[\\]a]", "]", true],
+        ["[\\-]", "-", true],
+        ["[x\\-]", "x", true],
+        ["[x\\-]", "-", true],
+        ["[x\\-]", "z", false],
+        ["[\\-x]", "x", true],
+        ["[\\-x]", "-", true],
+        ["[\\-x]", "a", false],
+        ["*x", "xxx", true]
+      ];
+
+      for (var i = 0; i < testcases.length; i++) {
+        var test = testcases[i],
+            pattern = test[0],
+            s = test[1],
+            result = test[2];
+
+        expect(utils.shouldIgnore([pattern], s)).to.eql(result);
+      }
+
+      done();
     });
+
+    it("should pass the base exemple", function(done) {
+
+      // https://docs.docker.com/engine/reference/builder/#dockerignore-file
+      var dockerignore = [
+        '*/temp*',
+        '*/*/temp*',
+        'temp?'
+      ];
+
+      expect(utils.shouldIgnore(dockerignore, 'somedir/temporary.txt')).to.be.true;
+      expect(utils.shouldIgnore(dockerignore, 'somedir/subdir/temporary.txt')).to.be.true;
+      expect(utils.shouldIgnore(dockerignore, 'tempa')).to.be.true;
+      expect(utils.shouldIgnore(dockerignore, 'tempb')).to.be.true;
+
+      done();
+    });
+
+    it("should not ignore exception rules - 1", function(done) {
+
+      // https://docs.docker.com/engine/reference/builder/#dockerignore-file
+      var dockerignore = [
+        '*.md',
+        '!README*.md',
+        'README-secret.md'
+      ];
+
+      expect(utils.shouldIgnore(dockerignore, 'file1.md')).to.be.true;
+      expect(utils.shouldIgnore(dockerignore, 'file2.md')).to.be.true;
+      expect(utils.shouldIgnore(dockerignore, 'README-secret.md')).to.be.true;
+      expect(utils.shouldIgnore(dockerignore, 'README-ok.md')).to.be.false;
+
+      done();
+    });
+
+    it("should not ignore exception rules - 2", function(done) {
+
+      // https://docs.docker.com/engine/reference/builder/#dockerignore-file
+      var dockerignore = [
+        '*.md',
+        'README-secret.md',
+        '!README*.md'
+      ];
+
+      expect(utils.shouldIgnore(dockerignore, 'file1.md')).to.be.true;
+      expect(utils.shouldIgnore(dockerignore, 'file2.md')).to.be.true;
+      expect(utils.shouldIgnore(dockerignore, 'README-secret.md')).to.be.false;
+      expect(utils.shouldIgnore(dockerignore, 'README-ok.md')).to.be.false;
+
+      done();
+    });
+
+  });
+});
