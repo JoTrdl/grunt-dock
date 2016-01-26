@@ -5,7 +5,7 @@ FROM    debian:latest
 
 # Install node
 RUN     export DEBIAN_FRONTEND=noninteractive && \
-        apt-get update; apt-get upgrade && \
+        apt-get update && apt-get upgrade -y && apt-get autoremove && apt-get autoclean && \
         apt-get install -y wget && \
         wget -q http://nodejs.org/dist/v0.10.33/node-v0.10.33-linux-x64.tar.gz && \
         tar --strip-components 1 -xzf node-v* -C /usr/local && \

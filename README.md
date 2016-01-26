@@ -42,6 +42,8 @@ Grunt-dock supports these commands:
 
  * **list** images or containers
  * **build** images
+ * **push** push built images to a Docker registry
+ * **pull** pull images from a Docker registry to one or more hosts
  * **clean** dangling images and exited containers
  * **start**/**stop**/**restart**/**kill**/**pause**/**unpause** containers
  * **logs** containers
@@ -56,6 +58,13 @@ Here is a basic Grunt configuration:
 ```javascript
 dock: {
   options: {
+  
+    registry: <Docker registry URL>,
+    auth : {
+      email : <email to use to connect to Docker registry>,
+      username : <Docker registry username>,
+      password : <Docker registry password>
+    }
   
     docker: {
       // docker connection
@@ -75,7 +84,16 @@ dock: {
           kill:    { /* extra options to docker kill    */ },
           logs:    { /* extra options to docker logs    */ },
           pause:   { /* extra options to docker pause   */ },
-          unpause: { /* extra options to docker unpause */ }
+          unpause: { /* extra options to docker unpause */ },
+          push:    { /* extra options to docker push */ },
+          pull:    [/* Docker connections (one for every node from which to pull */],
+          run:     {
+                     docker: [/* Docker connections (one for every node from which 
+                              the container has to run */],
+                     cmd : [/* Commands to execute upon running the container */],
+                     create : /* Container create options */,
+                     start : /* Containder start options */
+          }
         }
       }
     }

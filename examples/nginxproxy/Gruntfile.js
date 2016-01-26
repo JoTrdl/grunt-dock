@@ -1,6 +1,6 @@
-/* 
+/*
  * MIT License (MIT) - Copyright (c) 2014 Johann Troendle
- * 
+ *
  * This file is part of <grunt-dock>.
  */
 
@@ -11,18 +11,18 @@ var fs = require('fs'),
     path = require('path'),
     utils = require('../../lib/utils');
 
-// Prevent a UNABLE_TO_VERIFY_LEAF_SIGNATURE error with node version v4.2.1 
+// Prevent a UNABLE_TO_VERIFY_LEAF_SIGNATURE error with node version v4.2.1
 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
 
 module.exports = function(grunt) {
 
-  var caPath   = path.resolve(utils.getUserHome(), '.boot2docker/certs/boot2docker-vm/', 'ca.pem'),
-      certPath = path.resolve(utils.getUserHome(), '.boot2docker/certs/boot2docker-vm/', 'cert.pem'),
-      keyPath  = path.resolve(utils.getUserHome(), '.boot2docker/certs/boot2docker-vm/', 'key.pem');
+  var caPath   = path.resolve(utils.getUserHome(), '.docker/machine/certs/', 'ca.pem'),
+      certPath = path.resolve(utils.getUserHome(), '.docker/machine/certs/', 'cert.pem'),
+      keyPath  = path.resolve(utils.getUserHome(), '.docker/machine/certs/', 'key.pem');
 
   grunt.initConfig({
     dock: {
-  
+
       options: {
 
         // Docker connection options
@@ -31,14 +31,14 @@ module.exports = function(grunt) {
         docker: {
           version: 'v1.15',
           protocol: 'https',
-          host: '192.168.59.103',
+          host: '192.168.99.100',
           port: '2376',
 
           ca: fs.readFileSync(caPath),
           cert: fs.readFileSync(certPath),
           key: fs.readFileSync(keyPath)
         }
-        
+
       },
 
       // For this sample, we will use a dev target
@@ -54,10 +54,10 @@ module.exports = function(grunt) {
               dockerfile: 'DockerNode',
 
               options: {
-                
+
                 // A startup, bind the 8080 port to the host
                 // Bind the directory 'bundle/node' into the directory container '/bundle'
-                start:  { 
+                start:  {
                   "PortBindings": { "8080/tcp": [ { "HostPort": "8080" } ] },
                   "Binds":[__dirname + "/bundle/node:/bundle"]
                 },
@@ -95,7 +95,7 @@ module.exports = function(grunt) {
       }
     }
   });
-  
+
   require('../../tasks/dock')(grunt);
 
 };
