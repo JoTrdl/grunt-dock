@@ -1,7 +1,7 @@
 {
   "name": "grunt-dock",
   "description": "A grunt plugin to manage Docker",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "license": "MIT",
   "author": "Johann Troendle",
   "maintainers": [
